@@ -28,5 +28,5 @@ export default function MovieCard({ movie }) {
     </div>
   );
 }
-```
+
 
