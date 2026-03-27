@@ -30,9 +30,3 @@ export default function MovieCard({ movie }) {
 }
 ```
 
----
-
-## File 9 — `.env.example`
-**Path:** `.env.example`
-```
-TMDB_BEARER_TOKEN=your_tmdb_bearer_token_here
