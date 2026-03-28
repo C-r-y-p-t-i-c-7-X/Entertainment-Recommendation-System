@@ -9,11 +9,109 @@
 }
 
 body {
-  background-color: #0a0a0a;
+  background-color: #0d0d1a;
   color: #ffffff;
   font-family: 'Segoe UI', sans-serif;
+  overflow-x: hidden;
 }
 
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  height: 4px;
+  width: 4px;
+}
+::-webkit-scrollbar-track {
+  background: #1a1a2e;
+}
+::-webkit-scrollbar-thumb {
+  background: #7c3aed;
+  border-radius: 10px;
+}
 
+/* Row horizontal scroll */
+.scroll-row {
+  display: flex;
+  overflow-x: auto;
+  gap: 16px;
+  padding-bottom: 12px;
+  scrollbar-width: thin;
+  scrollbar-color: #7c3aed #1a1a2e;
+}
 
+.scroll-row::-webkit-scrollbar {
+  height: 4px;
+}
 
+/* Card hover effect */
+.media-card {
+  flex: 0 0 auto;
+  width: 160px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.media-card:hover {
+  transform: scale(1.08);
+  box-shadow: 0 8px 32px rgba(124, 58, 237, 0.5);
+  z-index: 10;
+}
+
+.media-card .overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(to top, rgba(13,13,26,0.98) 0%, transparent 100%);
+  padding: 12px 8px 8px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.media-card:hover .overlay {
+  opacity: 1;
+}
+
+/* Hero gradient */
+.hero-gradient {
+  background: linear-gradient(
+    to right,
+    rgba(13, 13, 26, 1) 0%,
+    rgba(13, 13, 26, 0.7) 50%,
+    transparent 100%
+  );
+}
+
+/* Gradient purple button */
+.btn-primary {
+  background: linear-gradient(135deg, #7c3aed, #a855f7);
+  color: white;
+  padding: 10px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.btn-primary:hover {
+  opacity: 0.85;
+}
+
+.btn-secondary {
+  background: rgba(255,255,255,0.15);
+  backdrop-filter: blur(8px);
+  color: white;
+  padding: 10px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  border: 1px solid rgba(255,255,255,0.2);
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-secondary:hover {
+  background: rgba(255,255,255,0.25);
+}
