@@ -12,7 +12,11 @@ export default function MediaRow({ title, items, onCardClick }) {
       </h2>
       <div className="scroll-row px-8">
         {items.map((item) => (
-          <MovieCard key={item.id} movie={item} onClick={onCardClick} />
+          <MovieCard
+            key={item.id}
+            movie={item}
+            onCardClick={onCardClick}
+          />
         ))}
       </div>
     </div>
