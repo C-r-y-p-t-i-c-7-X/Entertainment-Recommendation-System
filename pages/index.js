@@ -6,17 +6,39 @@ import Modal from '../components/Modal';
 
 export default function Home({ trending, topRated, tvShows, movies }) {
   const [selectedItem, setSelectedItem] = useState(null);
-  const featured = trending?.[0];
+  const [heroItem, setHeroItem] = useState(null);
+
+  const featured = heroItem || trending?.[0];
 
   return (
     <main style={{ backgroundColor: '#0d0d1a', minHeight: '100vh' }}>
       <Navbar />
       <HeroBanner item={featured} />
       <div className="pt-8">
-        <MediaRow title="🔥 Trending This Week" items={trending} onCardClick={setSelectedItem} />
-        <MediaRow title="⭐ Top Rated Movies" items={topRated} onCardClick={setSelectedItem} />
-        <MediaRow title="📺 Popular TV Shows" items={tvShows} onCardClick={setSelectedItem} />
-        <MediaRow title="🎬 Latest Movies" items={movies} onCardClick={setSelectedItem} />
+        <MediaRow
+          title="🔥 Trending This Week"
+          items={trending}
+          onCardClick={setSelectedItem}
+          onCardHover={setHeroItem}
+        />
+        <MediaRow
+          title="⭐ Top Rated Movies"
+          items={topRated}
+          onCardClick={setSelectedItem}
+          onCardHover={setHeroItem}
+        />
+        <MediaRow
+          title="📺 Popular TV Shows"
+          items={tvShows}
+          onCardClick={setSelectedItem}
+          onCardHover={setHeroItem}
+        />
+        <MediaRow
+          title="🎬 Latest Movies"
+          items={movies}
+          onCardClick={setSelectedItem}
+          onCardHover={setHeroItem}
+        />
       </div>
       {selectedItem && (
         <Modal item={selectedItem} onClose={() => setSelectedItem(null)} />
