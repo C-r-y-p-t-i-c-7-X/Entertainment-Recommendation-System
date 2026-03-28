@@ -1,6 +1,6 @@
 import MovieCard from './MovieCard';
 
-export default function MediaRow({ title, items }) {
+export default function MediaRow({ title, items, onCardClick }) {
   if (!items || items.length === 0) return null;
 
   return (
@@ -12,7 +12,7 @@ export default function MediaRow({ title, items }) {
       </h2>
       <div className="scroll-row px-8">
         {items.map((item) => (
-          <MovieCard key={item.id} movie={item} />
+          <MovieCard key={item.id} movie={item} onClick={onCardClick} />
         ))}
       </div>
     </div>
