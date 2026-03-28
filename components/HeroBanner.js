@@ -5,19 +5,52 @@ import { useState, useEffect } from 'react';
 export default function HeroBanner({ item }) {
   const router = useRouter();
   const [displayItem, setDisplayItem] = useState(item);
+  const [nextItem, setNextItem] = useState(null);
   const [fade, setFade] = useState(true);
 
   useEffect(() => {
-    if (!item) return;
-    // Fade out
-    setFade(false);
-    const timer = setTimeout(() => {
-      // Swap content while invisible
-      setDisplayItem(item);
-      // Fade back in
-      setFade(true);
-    }, 200);
-    return () => clearTimeout(timer);
+    if (!item || item.id === displayItem?.id) return;
+
+    // Step 1 — preload the new image silently in background
+    if (item.backdrop_path) {
+      const img = new window.Image();
+      img.src = `https://image.tmdb.org/t/p/original${item.backdrop_path}`;
+
+      // Step 2 — once image is fully loaded, THEN start the transition
+      img.onload = () => {
+        setFade(false); // fade out current
+        setTimeout(() => {
+          setDisplayItem(item); // swap to new (already cached)
+          setFade(true); // fade in new instantly
+        }, 200);
+      };
+
+      // Fallback — if image fails or takes too long (3s), swap anyway
+      img.onerror = () => {
+        setFade(false);
+        setTimeout(() => {
+          setDisplayItem(item);
+          setFade(true);
+        }, 200);
+      };
+
+      const fallback = setTimeout(() => {
+        setFade(false);
+        setTimeout(() => {
+          setDisplayItem(item);
+          setFade(true);
+        }, 200);
+      }, 3000);
+
+      return () => clearTimeout(fallback);
+    } else {
+      // No backdrop, just swap directly
+      setFade(false);
+      setTimeout(() => {
+        setDisplayItem(item);
+        setFade(true);
+      }, 200);
+    }
   }, [item]);
 
   if (!displayItem) return null;
@@ -120,6 +153,3 @@ export default function HeroBanner({ item }) {
     </div>
   );
 }
-
-
-
