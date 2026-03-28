@@ -120,20 +120,6 @@ export default function HeroBanner({ item }) {
     </div>
   );
 }
-```
 
----
 
-## What Changed & Why
 
-The key fix is a **fade out → swap → fade in** sequence:
-```
-User clicks card
-      ↓
-Banner fades OUT (opacity 0) + text slides down slightly — 200ms
-      ↓
-New movie data swaps in while invisible
-      ↓
-Banner fades IN (opacity 1) + text slides back up — 300ms
-      ↓
-Crisp, smooth transition ✅
