@@ -1,6 +1,6 @@
 import Image from 'next/image';
 
-export default function MovieCard({ movie, onClick }) {
+export default function MovieCard({ movie, onClick, onHover }) {
   const title = movie.title || movie.name;
   const poster = movie.poster_path
     ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
@@ -12,7 +12,11 @@ export default function MovieCard({ movie, onClick }) {
   if (!poster) return null;
 
   return (
-    <div className="media-card" onClick={() => onClick && onClick(movie)}>
+    <div
+      className="media-card"
+      onClick={() => onClick && onClick(movie)}
+      onMouseEnter={() => onHover && onHover(movie)}
+    >
       <div className="relative w-40 h-60">
         <Image
           src={poster}
