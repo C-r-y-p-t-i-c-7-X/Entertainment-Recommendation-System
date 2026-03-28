@@ -53,8 +53,9 @@ const COUNTRIES = [
 const SORT_OPTIONS = [
   { value: 'popularity.desc', label: 'Most Popular' },
   { value: 'vote_average.desc', label: 'Top Rated' },
-  { value: 'release_date.desc', label: 'Newest First' },
+  { value: 'released.desc', label: 'Newest Released' },
   { value: 'release_date.asc', label: 'Oldest First' },
+  { value: 'upcoming', label: '🔜 Upcoming' },
 ];
 
 const currentYear = new Date().getFullYear();
