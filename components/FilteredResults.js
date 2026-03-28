@@ -110,3 +110,10 @@ export default function FilteredResults({ filters, viewMode, onCardClick }) {
     </div>
   );
 }
+
+
+
+
+
+
+
