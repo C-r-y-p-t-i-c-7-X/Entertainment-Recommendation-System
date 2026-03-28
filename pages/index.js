@@ -1,39 +1,49 @@
-import MovieCard from '../components/MovieCard';
+import Navbar from '../components/Navbar';
+import HeroBanner from '../components/HeroBanner';
+import MediaRow from '../components/MediaRow';
 
-export default function Home({ movies }) {
+export default function Home({ trending, topRated, tvShows, movies }) {
+  const featured = trending?.[0];
+
   return (
-    <main className="min-h-screen bg-[#0a0a0a] px-6 py-10">
-      <h1 className="text-4xl font-bold text-white mb-8">
-        🎬 Entertainment Hub
-      </h1>
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
-        {movies.map((movie) => (
-          <MovieCard key={movie.id} movie={movie} />
-        ))}
+    <main style={{ backgroundColor: '#0d0d1a', minHeight: '100vh' }}>
+      <Navbar />
+      <HeroBanner item={featured} />
+      <div className="pt-8">
+        <MediaRow title="🔥 Trending This Week" items={trending} />
+        <MediaRow title="⭐ Top Rated Movies" items={topRated} />
+        <MediaRow title="📺 Popular TV Shows" items={tvShows} />
+        <MediaRow title="🎬 Latest Movies" items={movies} />
       </div>
     </main>
   );
 }
 
 export async function getServerSideProps() {
-  const res = await fetch(
-    `https://api.themoviedb.org/3/trending/all/week?language=en-US`,
-    {
-      headers: {
-        Authorization: `Bearer ${process.env.TMDB_BEARER_TOKEN}`,
-      },
-    }
-  );
-  const data = await res.json();
+  const headers = {
+    Authorization: `Bearer ${process.env.TMDB_BEARER_TOKEN}`,
+  };
+
+  const [trendingRes, topRatedRes, tvRes, moviesRes] = await Promise.all([
+    fetch('https://api.themoviedb.org/3/trending/all/week?language=en-US', { headers }),
+    fetch('https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=1', { headers }),
+    fetch('https://api.themoviedb.org/3/tv/popular?language=en-US&page=1', { headers }),
+    fetch('https://api.themoviedb.org/3/movie/popular?language=en-US&page=1', { headers }),
+  ]);
+
+  const [trending, topRated, tv, movies] = await Promise.all([
+    trendingRes.json(),
+    topRatedRes.json(),
+    tvRes.json(),
+    moviesRes.json(),
+  ]);
 
   return {
     props: {
-      movies: data.results || [],
+      trending: trending.results || [],
+      topRated: topRated.results || [],
+      tvShows: tv.results || [],
+      movies: movies.results || [],
     },
   };
 }
-
-
-
-
-
