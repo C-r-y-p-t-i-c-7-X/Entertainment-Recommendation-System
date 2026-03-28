@@ -2,13 +2,15 @@ import { useState } from 'react';
 import Navbar from '../components/Navbar';
 import HeroBanner from '../components/HeroBanner';
 import MediaRow from '../components/MediaRow';
-import Modal from '../components/Modal';
 
 export default function Home({ trending, topRated, tvShows, movies }) {
-  const [selectedItem, setSelectedItem] = useState(null);
   const [heroItem, setHeroItem] = useState(null);
-
   const featured = heroItem || trending?.[0];
+
+  const handleCardClick = (movie) => {
+    setHeroItem(movie);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   return (
     <main style={{ backgroundColor: '#0d0d1a', minHeight: '100vh' }}>
@@ -18,31 +20,24 @@ export default function Home({ trending, topRated, tvShows, movies }) {
         <MediaRow
           title="🔥 Trending This Week"
           items={trending}
-          onCardClick={setSelectedItem}
-          onCardHover={setHeroItem}
+          onCardClick={handleCardClick}
         />
         <MediaRow
           title="⭐ Top Rated Movies"
           items={topRated}
-          onCardClick={setSelectedItem}
-          onCardHover={setHeroItem}
+          onCardClick={handleCardClick}
         />
         <MediaRow
           title="📺 Popular TV Shows"
           items={tvShows}
-          onCardClick={setSelectedItem}
-          onCardHover={setHeroItem}
+          onCardClick={handleCardClick}
         />
         <MediaRow
           title="🎬 Latest Movies"
           items={movies}
-          onCardClick={setSelectedItem}
-          onCardHover={setHeroItem}
+          onCardClick={handleCardClick}
         />
       </div>
-      {selectedItem && (
-        <Modal item={selectedItem} onClose={() => setSelectedItem(null)} />
-      )}
     </main>
   );
 }
