@@ -23,8 +23,9 @@ export default function DetailPage({ details, trailer, cast, providers, similar 
     <main style={{ backgroundColor: '#0d0d1a', minHeight: '100vh' }}>
       <Navbar />
 
+
       {/* Trailer Section */}
-      <div style={{ width: '100%', aspectRatio: '16/9', maxHeight: '75vh', backgroundColor: '#000', position: 'relative', marginTop: '0' }}>
+      <div style={{ width: '100%', aspectRatio: '16/9', maxHeight: '75vh', backgroundColor: '#000', position: 'relative', marginTop: '64px' }}>
         {trailer ? (
           <iframe
             width="100%" height="100%"
