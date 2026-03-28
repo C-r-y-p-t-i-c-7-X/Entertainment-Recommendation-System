@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import MovieCard from './MovieCard';
 import MediaRow from './MediaRow';
+import SkeletonGrid from './SkeletonGrid';
 
 export default function FilteredResults({ filters, viewMode, onCardClick }) {
   const [results, setResults] = useState([]);
@@ -24,10 +25,8 @@ export default function FilteredResults({ filters, viewMode, onCardClick }) {
         ...(activeFilters.country && { country: activeFilters.country }),
         ...(activeFilters.year && { year: activeFilters.year }),
       });
-
       const res = await fetch(`/api/filter?${params}`);
       const data = await res.json();
-
       if (pageNum === 1) {
         setResults(data.results || []);
       } else {
@@ -49,31 +48,7 @@ export default function FilteredResults({ filters, viewMode, onCardClick }) {
 
   const mediaType = filters.type || 'movie';
 
-  // Group by genre for rows view
-  const groupedByGenre = () => {
-    const groups = {};
-    results.forEach((item) => {
-      const genre = item.genre_ids?.[0] || 'Other';
-      if (!groups[genre]) groups[genre] = [];
-      groups[genre].push({ ...item, media_type: mediaType });
-    });
-    return groups;
-  };
-
-  if (loading && results.length === 0) {
-    return (
-      <div style={{ display: 'flex', justifyContent: 'center', padding: '80px', flexDirection: 'column', alignItems: 'center', gap: '16px' }}>
-        <div style={{
-          width: '48px', height: '48px', borderRadius: '50%',
-          border: '3px solid rgba(124,58,237,0.2)',
-          borderTop: '3px solid #a855f7',
-          animation: 'spin 0.8s linear infinite',
-        }} />
-        <p style={{ color: '#9ca3af', fontSize: '14px' }}>Finding content for you...</p>
-        <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
-      </div>
-    );
-  }
+  if (loading && results.length === 0) return <SkeletonGrid count={12} />;
 
   if (!loading && results.length === 0) {
     return (
@@ -87,19 +62,15 @@ export default function FilteredResults({ filters, viewMode, onCardClick }) {
 
   return (
     <div>
-      {/* Results count */}
       <div style={{ padding: '20px 32px 8px', color: '#9ca3af', fontSize: '13px' }}>
         Showing <span style={{ color: '#a855f7', fontWeight: '700' }}>{results.length}</span> results
-        {filters.genre || filters.country || filters.year || filters.type ? ' for your filters' : ''}
       </div>
 
-      {/* Grid View */}
       {viewMode === 'grid' && (
         <div style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))',
-          gap: '20px',
-          padding: '16px 32px',
+          gap: '20px', padding: '16px 32px',
         }}>
           {results.map((item) => (
             <MovieCard
@@ -108,10 +79,12 @@ export default function FilteredResults({ filters, viewMode, onCardClick }) {
               onCardClick={onCardClick}
             />
           ))}
+          {loading && Array.from({ length: 4 }).map((_, i) => (
+            <SkeletonCard key={`sk-${i}`} />
+          ))}
         </div>
       )}
 
-      {/* Rows View */}
       {viewMode === 'rows' && (
         <div style={{ paddingTop: '16px' }}>
           <MediaRow
@@ -122,7 +95,6 @@ export default function FilteredResults({ filters, viewMode, onCardClick }) {
         </div>
       )}
 
-      {/* Load More */}
       {page < totalPages && (
         <div style={{ display: 'flex', justifyContent: 'center', padding: '32px' }}>
           <button
