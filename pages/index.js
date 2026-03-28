@@ -1,8 +1,11 @@
+import { useState } from 'react';
 import Navbar from '../components/Navbar';
 import HeroBanner from '../components/HeroBanner';
 import MediaRow from '../components/MediaRow';
+import Modal from '../components/Modal';
 
 export default function Home({ trending, topRated, tvShows, movies }) {
+  const [selectedItem, setSelectedItem] = useState(null);
   const featured = trending?.[0];
 
   return (
@@ -10,11 +13,14 @@ export default function Home({ trending, topRated, tvShows, movies }) {
       <Navbar />
       <HeroBanner item={featured} />
       <div className="pt-8">
-        <MediaRow title="🔥 Trending This Week" items={trending} />
-        <MediaRow title="⭐ Top Rated Movies" items={topRated} />
-        <MediaRow title="📺 Popular TV Shows" items={tvShows} />
-        <MediaRow title="🎬 Latest Movies" items={movies} />
+        <MediaRow title="🔥 Trending This Week" items={trending} onCardClick={setSelectedItem} />
+        <MediaRow title="⭐ Top Rated Movies" items={topRated} onCardClick={setSelectedItem} />
+        <MediaRow title="📺 Popular TV Shows" items={tvShows} onCardClick={setSelectedItem} />
+        <MediaRow title="🎬 Latest Movies" items={movies} onCardClick={setSelectedItem} />
       </div>
+      {selectedItem && (
+        <Modal item={selectedItem} onClose={() => setSelectedItem(null)} />
+      )}
     </main>
   );
 }
