@@ -78,14 +78,23 @@ const selectStyle = {
   minWidth: '140px',
 };
 
-export default function FilterBar({ onFilterChange, viewMode, onViewModeChange }) {
-  const [filters, setFilters] = useState({
-    type: '',
-    genre: '',
-    country: '',
-    year: '',
-    sort: 'popularity.desc',
-  });
+export default function FilterBar({ onFilterChange, viewMode, onViewModeChange, initialFilters }) {
+  const [filters, setFilters] = useState(
+      initialFilters || {
+        type: '',
+        genre: '',
+        country: '',
+        year: '',
+        sort: 'popularity.desc',
+      }
+    );
+  
+    // Sync if initialFilters changes (e.g. from URL query)
+    useEffect(() => {
+      if (initialFilters) {
+        setFilters(initialFilters);
+      }
+    }, [JSON.stringify(initialFilters)]);
 
   const handleChange = (key, value) => {
     const updated = { ...filters, [key]: value };
