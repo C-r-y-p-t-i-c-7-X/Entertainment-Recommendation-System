@@ -4,36 +4,32 @@ export default function MovieCard({ movie }) {
   const title = movie.title || movie.name;
   const poster = movie.poster_path
     ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
-    : '/no-image.png';
+    : null;
   const rating = movie.vote_average?.toFixed(1);
   const year = (movie.release_date || movie.first_air_date || '').slice(0, 4);
+  const type = movie.media_type === 'tv' ? 'TV Show' : 'Movie';
+
+  if (!poster) return null;
 
   return (
-    <div className="bg-[#1a1a1a] rounded-xl overflow-hidden hover:scale-105 transition-transform duration-300 cursor-pointer">
-      <div className="relative w-full h-72">
+    <div className="media-card">
+      <div className="relative w-40 h-60">
         <Image
           src={poster}
           alt={title}
           fill
           className="object-cover"
+          sizes="160px"
         />
       </div>
-      <div className="p-3">
-        <h2 className="text-white font-semibold text-sm truncate">{title}</h2>
-        <div className="flex justify-between mt-1 text-xs text-gray-400">
-          <span>{year}</span>
-          <span>⭐ {rating}</span>
+      <div className="overlay">
+        <p className="text-white text-xs font-bold truncate">{title}</p>
+        <div className="flex justify-between mt-1">
+          <span className="text-purple-400 text-xs">{type}</span>
+          <span className="text-yellow-400 text-xs">⭐ {rating}</span>
         </div>
+        <p className="text-gray-400 text-xs mt-1">{year}</p>
       </div>
     </div>
   );
 }
-
-
-
-
-
-
-
-
-
